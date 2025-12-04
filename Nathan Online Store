@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Store with Email Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .product h2 {
+            margin: 0 0 10px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Our Products</h1>
+
+<div class="product">
+    <h2>Product 1 - $10</h2>
+    <p>Description of product 1.</p>
+</div>
+<div class="product">
+    <h2>Product 2 - $20</h2>
+    <p>Description of product 2.</p>
+</div>
+
+<h2>Checkout</h2>
+<form id="checkoutForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="product">Product:</label>
+    <select id="product" name="product" required>
+        <option value="Product 1 - $10">Product 1 - $10</option>
+        <option value="Product 2 - $20">Product 2 - $20</option>
+    </select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" min="1" value="1" required />
+
+    <button type="submit">Checkout via Email</button>
+</form>
+
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const product = document.getElementById('product').value;
+        const quantity = document.getElementById('quantity').value;
+
+        const subject = encodeURIComponent('Order from Online Store');
+        const body = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\nProduct: ${product}\nQuantity: ${quantity}`
+        );
+
+        window.location.href = `mailto:your.email@example.com?subject=${subject}&body=${body}`;
+    });
+</script>
+</body>
+</html>
