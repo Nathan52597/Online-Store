@@ -1,95 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Online Store with Email Checkout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual E-commerce Store & Email Checkout</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: var(--light-bg); color: #333; }
+        header { background-color: #343a40; color: white; padding: 15px 0; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+
+        /* Product Grid Styling */
+        #products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .product-card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: var(--card-shadow); 
+            text-align: center; 
+            transition: transform 0.3s ease;
+            display: flex; /* Flexbox for better alignment */
+            flex-direction: column;
         }
-        .product {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 10px;
+        .product-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
         }
-        .product h2 {
-            margin: 0 0 10px;
+        .product-card img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 8px; 
+            margin-bottom: 15px;
+            object-fit: cover; /* Ensures images look good */
         }
-        form {
-            max-width: 600px;
-            margin: 0 auto;
+        .product-card h3 { color: var(--primary-color); margin-top: 0; }
+        .price { font-weight: 700; color: var(--secondary-color); font-size: 1.4em; margin-bottom: 15px; display: block; }
+        .product-description { margin-bottom: 20px; flex-grow: 1; }
+        
+        /* Form Styling */
+        .checkout-section { background: white; padding: 30px; border-radius: 10px; box-shadow: var(--card-shadow); margin-top: 40px; }
+        fieldset { border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        legend { font-size: 1.2em; font-weight: bold; color: var(--primary-color); padding: 0 10px; }
+        label { display: block; margin-top: 15px; font-weight: 600; color: #555; }
+        input[type="text"], input[type="email"], textarea { width: 95%; padding: 12px; margin-top: 5px; border: 1px solid #ced4da; border-radius: 5px; box-sizing: border-box; }
+        
+        /* Buttons and Inputs */
+        button { 
+            background-color: var(--primary-color); 
+            color: white; 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: auto; /* Push button to the bottom of the card */
+            font-size: 1.1em; 
+            transition: background-color 0.3s; 
         }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
+        button:hover { background-color: #0056b3; }
+        #order-summary { padding: 15px; background: var(--light-bg); border-radius: 5px; margin-top: 15px; }
+        #order-summary span { font-weight: bold; color: var(--secondary-color); font-size: 1.5em; }
+        
+        /* Email Example Styling */
+        .email-example { margin-top: 60px; border-top: 2px dashed #aaa; padding-top: 30px; }
+        .email-example h3 { color: #6c757d; }
     </style>
 </head>
 <body>
-<h1>Our Products</h1>
 
-<div class="product">
-    <h2>Product 1 - $10</h2>
-    <p>Description of product 1.</p>
-</div>
-<div class="product">
-    <h2>Product 2 - $20</h2>
-    <p>Description of product 2.</p>
-</div>
+    <header>
+        <h1>🛍️ Visual Store & Checkout Demo</h1>
+        <nav>
+            <a href="#products">Products</a> 
+            <a href="#checkout">Checkout</a>
+        </nav>
+    </header>
 
-<h2>Checkout</h2>
-<form id="checkoutForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required />
+    <div class="container">
+        
+        <h2>Featured Products</h2>
+        <main id="products">
+            <div class="product-card" data-price="19.99" data-name="Idea Research Blueprint" data-id="P471">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/11024100338337909061_0" alt="The infographic displays a four-step process, which is a business model for taking an idea from research to product. The four main steps are Research, Discovery, Concept, and Product, each with its own icon and description. The infographic also shows six additional icons at the bottom, which could represent different aspects or stages of the business model.  The image has following diagram labels: Step 1: Research, Step 2: Discovery, Step 3: Concept.">
+                <h3>Idea Research Blueprint</h3>
+                <p class="product-description">A detailed 4-step process for turning initial research into a tangible concept (Research, Discovery, Concept, Product).</p>
+                <span class="price">$19.99</span>
+                <button onclick="addToCart(this)">Add to Cart</button>
+            </div>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required />
+            <div class="product-card" data-price="49.50" data-name="Market Launch 4-Step Guide" data-id="P472">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/11024100338337909061_1" alt="This infographic illustrates a four-step process for bringing a product to market. It starts with research and progresses through discovery, concept, and finally, the product itself. The design uses a clear, linear progression with numbered stages, alternating colors, and simple icons to represent each phase. The image has following diagram labels: Step 1: Research, Step 2: Discover, Step 3: Concept, Step 4: Product.">
+                <h3>Market Launch 4-Step Guide</h3>
+                <p class="product-description">A visual, 4-step guide covering research, discovery, concept, and final product stages for a successful market entry.</p>
+                <span class="price">$49.50</span>
+                <button onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </main>
 
-    <label for="product">Product:</label>
-    <select id="product" name="product" required>
-        <option value="Product 1 - $10">Product 1 - $10</option>
-        <option value="Product 2 - $20">Product 2 - $20</option>
-    </select>
+        <hr>
 
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" min="1" value="1" required />
+        <section id="checkout" class="checkout-section">
+            <h2>🛒 Finalize Order</h2>
 
-    <button type="submit">Checkout via Email</button>
-</form>
+            <p style="color: red; font-weight: bold;">
+                **WARNING:** This form uses the unreliable `mailto:` action and is for demonstration only. A real store requires server-side processing.
+            </p>
 
-<script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+            <form id="checkout-form" action="mailto:yourstoreemail@example.com" method="post" enctype="text/plain">
+                <fieldset>
+                    <legend>Order Summary</legend>
+                    <label for="items">Items in Cart:</label>
+                    <textarea id="items" name="Order Items" rows="4" required readonly style="background-color: #e9ecef;">(Cart is empty)</textarea>
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const product = document.getElementById('product').value;
-        const quantity = document.getElementById('quantity').value;
+                    <div id="order-summary">
+                        <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                        <p>Shipping: <span id="shipping">$5.00</span> (Flat Rate)</p>
+                        <h3>Grand Total: <span id="total-price">$5.00</span></h3>
+                        <input type="hidden" id="final-total-input" name="Final Total" value="$5.00">
+                    </div>
+                </fieldset>
 
-        const subject = encodeURIComponent('Order from Online Store');
-        const body = encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\nProduct: ${product}\nQuantity: ${quantity}`
-        );
+                <fieldset>
+                    <legend>Shipping and Contact Information</legend>
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="Full Name" required>
 
-        window.location.href = `mailto:your.email@example.com?subject=${subject}&body=${body}`;
-    });
-</script>
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="Email Address" required>
+
+                    <label for="address">Shipping Address:</label>
+                    <textarea id="address" name="Shipping Address" rows="3" name="Shipping Address" required></textarea>
+                </fieldset>
+                
+                <button type="submit">Complete Order Inquiry</button>
+            </form>
+        </section>
+    </div>
+
+    <footer>
+        <p style="text-align: center; padding: 20px; margin-top: 30px; color: #6c757d; border-top: 1px solid #dee2e6;">&copy; 2025 Store Demo. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const cart = [];
+        const SHIPPING_FEE = 5.00;
+
+        function updateCartDisplay() {
+            const itemsTextarea = document.getElementById('items');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total-price');
+            const finalTotalInput = document.getElementById('final-total-input');
+            
+            let totalCost = 0;
+            let cartText = '';
+
+            if (cart.length === 0) {
+                cartText = '(Cart is empty)';
+            } else {
+                const itemMap = {};
+                for (const item of cart) {
+                    // Group items by name and sum quantities
+                    if (itemMap[item.name]) {
+                        itemMap[item.name].quantity++;
+                    } else {
+                        itemMap[item.name] = { ...item, quantity: 1 };
+                    }
+                }
+
+                for (const name in itemMap) {
+                    const item = itemMap[name];
+                    const itemTotal = item.price * item.quantity;
+                    totalCost += itemTotal;
+                    // Format the display string for the textarea
+                    cartText += `${item.name} (x${item.quantity}) - $${itemTotal.toFixed(2)}\n`;
+                }
+            }
+
+            const grandTotal = totalCost + SHIPPING_FEE;
+            
+            itemsTextarea.value = cartText;
+            subtotalElement.textContent = `$${totalCost.toFixed(2)}`;
+            totalElement.textContent = `$${grandTotal.toFixed(2)}`;
+            finalTotalInput.value = `$${grandTotal.toFixed(2)}`; // Update hidden field for mailto:
+        }
+
+        function addToCart(button) {
+            const card = button.closest('.product-card');
+            const price = parseFloat(card.dataset.price);
+            const name = card.dataset.name;
+
+            cart.push({ name, price });
+            updateCartDisplay();
+            // Simple visual feedback
+            button.textContent = 'Added! 👍';
+            setTimeout(() => {
+                button.textContent = 'Add to Cart';
+            }, 1000);
+        }
+
+        // Initialize display with shipping fee
+        updateCartDisplay();
+    </script>
 </body>
 </html>
